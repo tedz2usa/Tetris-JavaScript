@@ -79,7 +79,6 @@ function Block(x, y, type) {
   this.type = type;
   this.color = blockColors[type];
   this.squares = [];
-  this.unrotateNext = false;
   var positions = blockPositions[type];
   for (var i = 0; i < 4; i++) {
     var position = positions[i];
@@ -89,20 +88,11 @@ function Block(x, y, type) {
 }
 
 Block.prototype.rotate = function() {
-  for (var i = 0; i < this.squares.length; i++) {
-    var square = this.squares[i];
-    if (this.type != "O") {
+  if (this.type != "O") {
+    for (var i = 0; i < this.squares.length; i++) {
+      var square = this.squares[i];
       square.rotateAround(this.x, this.y);
     }
-    // if (this.type == "I" || this.type == "S" || this.type == "Z") {
-    //   if (!this.unrotateNext) {
-    //     this.unrotateNext = true;
-    //     square.rotateAround(this.x, this.y);
-    //   } else {
-    //     this.unrotateNext = false;
-    //     square.unRotateAround(this.x, this.y);
-    //   }
-    // }
   }
 }
 
