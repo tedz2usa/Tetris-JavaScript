@@ -10,6 +10,7 @@ var width, height;
 var gridSpace;
 var x, y;
 var gridMaxX, gridMaxY;
+var squaresToDraw;
 
 function init() {
   log("Window Loaded!");
@@ -26,6 +27,11 @@ function init() {
   gridSpace = 20;
   gridMaxX = width/gridSpace;
   gridMaxY = height/gridSpace;
+
+  squaresToDraw = new Array(gridMaxY);
+  for (var i = 0; i < gridMaxY; i++) {
+    squaresToDraw[i] = new Array(gridMaxX);
+  }
 
   x = 5;
   y = 5;
