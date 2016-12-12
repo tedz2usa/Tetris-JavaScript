@@ -29,7 +29,9 @@ function Block(x, y, type) {
   var positions = blockPositions[type];
   for (var i = 0; i < 4; i++) {
     var position = positions[i];
-    this.squares.push(new Square(x+position[0], y+position[1], this.color));
+    var square = new Square(x+position[0], y+position[1], this.color);
+    square.block = this;
+    this.squares.push(square);
   }
   blocks.push(this);
 }
