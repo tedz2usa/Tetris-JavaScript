@@ -103,6 +103,7 @@ Block.prototype.rotate = function() {
 }
 
 Block.prototype.updateFall = function() {
+  this.y++;
   for (var i = 0; i < this.squares.length; i++) {
     var square = this.squares[i];
     square.y++;
