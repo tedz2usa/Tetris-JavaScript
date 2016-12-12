@@ -3,10 +3,12 @@ var log = console.log.bind(console);
 log("Hello!");
 
 window.onload = init;
+window.onkeydown = keydown;
 
 var canvas, ctx;
 var width, height;
 var gridSpace;
+var x, y;
 
 function init() {
   log("Window Loaded!");
@@ -21,8 +23,33 @@ function init() {
   height = canvas.height;
   gridSpace = 20;
 
+  x = 5;
+  y = 5;
+  drawFrame();
+
+}
+
+function drawFrame() {
+  ctx.clearRect(0, 0, width, height);
   drawGridDots();
-  drawRect(1, 1);
+  drawRect(x, y);
+  window.requestAnimationFrame(drawFrame);
+}
+
+function keydown(e) {
+  log(e.code);
+  if (e.code == "ArrowLeft") {
+    x -= 1;
+  }
+  if (e.code == "ArrowRight") {
+    x += 1;
+  }
+  if (e.code == "ArrowUp") {
+    y -= 1;
+  }
+  if (e.code == "ArrowDown") {
+    y += 1;
+  }
 
 }
 
