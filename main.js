@@ -7,18 +7,10 @@ window.onkeydown = keydown;
 
 var canvas, ctx;
 var width, height;
-var gridSpace;
+var gridUnit;
 var x, y;
 var xMax, yMax;
 var squaresToDraw;
-
-var RED = 1;
-var ORANGE = 2;
-var YELLOW = 3;
-var GREEN = 4;
-var BLUE = 5;
-var PURPLE = 6;
-var CYAN = 7;
 
 function init() {
   log("Window Loaded!");
@@ -32,9 +24,9 @@ function init() {
   width = canvas.width;
   height = canvas.height;
 
-  gridSpace = 20;
-  xMax = width/gridSpace;
-  yMax = height/gridSpace;
+  gridUnit = 20;
+  xMax = width/gridUnit;
+  yMax = height/gridUnit;
 
   squaresToDraw = new Array(xMax);
   for (var i = 0; i < xMax; i++) {
@@ -44,7 +36,8 @@ function init() {
   x = 5;
   y = 5;
 
-  var s = new Square(3, 10, RED);
+  var s1 = new Square(3, 10, "red");
+  var s2 = new Square(4, 10, "orange");
 
   drawFrame();
 
@@ -68,11 +61,20 @@ function drawFrame() {
 function drawSquares() {
   for (var x = 0; x < xMax; x++) {
     for (var y = 0; y < yMax; y++) {
-      if (squaresToDraw[x][y]) {
-        drawRect(x, y);
+      var square = squaresToDraw[x][y];
+      if (square) {
+        drawSquare(x, y, square.color);
       }
     }
   }
+}
+
+function drawSquare(x, y, color) {
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.fillRect(x*gridUnit, y*gridUnit, gridUnit, gridUnit);
+  ctx.strokeRect(x*gridUnit+0.5, y*gridUnit+0.5, gridUnit, gridUnit);
+  ctx.restore();
 }
 
 function keydown(e) {
@@ -95,11 +97,11 @@ function keydown(e) {
 function drawGridDots() {
   for (var x = 0; x < xMax; x++) {
     for (var y = 0; y < yMax; y++) {
-      ctx.fillRect(x*gridSpace, y*gridSpace, 1, 1);
+      ctx.fillRect(x*gridUnit, y*gridUnit, 1, 1);
     }
   }
 }
 
 function drawRect(x, y) {
-  ctx.strokeRect(x * gridSpace+0.5, y * gridSpace+0.5, gridSpace, gridSpace);
+  ctx.strokeRect(x * gridUnit+0.5, y * gridUnit+0.5, gridUnit, gridUnit);
 }
