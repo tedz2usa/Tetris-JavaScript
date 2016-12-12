@@ -9,6 +9,7 @@ var canvas, ctx;
 var width, height;
 var gridSpace;
 var x, y;
+var gridMaxX, gridMaxY;
 
 function init() {
   log("Window Loaded!");
@@ -22,6 +23,8 @@ function init() {
   width = canvas.width;
   height = canvas.height;
   gridSpace = 20;
+  gridMaxX = width/gridSpace;
+  gridMaxY = height/gridSpace;
 
   x = 5;
   y = 5;
@@ -54,8 +57,8 @@ function keydown(e) {
 }
 
 function drawGridDots() {
-  for (var gridX = 0; gridX < width/gridSpace; gridX++) {
-    for (var gridY = 0; gridY < height/gridSpace; gridY++) {
+  for (var gridX = 0; gridX < gridMaxX; gridX++) {
+    for (var gridY = 0; gridY < gridMaxY; gridY++) {
       ctx.fillRect(gridX*gridSpace, gridY*gridSpace, 1, 1);
     }
   }
