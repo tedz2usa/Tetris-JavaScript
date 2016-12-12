@@ -50,6 +50,14 @@ function Square(x, y, color) {
   squaresToDraw[x][y] = this;
 }
 
+Square.prototype.draw = function() {
+  ctx.save();
+  ctx.fillStyle = this.color;
+  ctx.fillRect(this.x*gridUnit, this.y*gridUnit, gridUnit, gridUnit);
+  ctx.strokeRect(this.x*gridUnit+0.5, this.y*gridUnit+0.5, gridUnit, gridUnit);
+  ctx.restore();
+}
+
 function drawFrame() {
   ctx.clearRect(0, 0, width, height);
   drawGridDots();
@@ -63,18 +71,10 @@ function drawSquares() {
     for (var y = 0; y < yMax; y++) {
       var square = squaresToDraw[x][y];
       if (square) {
-        drawSquare(x, y, square.color);
+        square.draw();
       }
     }
   }
-}
-
-function drawSquare(x, y, color) {
-  ctx.save();
-  ctx.fillStyle = color;
-  ctx.fillRect(x*gridUnit, y*gridUnit, gridUnit, gridUnit);
-  ctx.strokeRect(x*gridUnit+0.5, y*gridUnit+0.5, gridUnit, gridUnit);
-  ctx.restore();
 }
 
 function keydown(e) {
