@@ -11,6 +11,7 @@ var gridUnit;
 var x, y;
 var xMax, yMax;
 var squaresToDraw;
+var fallingBlock;
 
 function init() {
   log("Window Loaded!");
@@ -33,6 +34,10 @@ function init() {
     squaresToDraw[i] = new Array(yMax);
   }
 
+  fallingBlock = new Block(8, 5, "I");
+  fallingBlock = new Block(8, 8, "J");
+  fallingBlock = new Block(8, 11, "L");
+
   x = 5;
   y = 5;
 
@@ -41,6 +46,26 @@ function init() {
 
   drawFrame();
 
+}
+
+function Block(x, y, type) {
+  this.x = x;
+  this.y = y;
+  this.type = type;
+  this.squares = [];
+  if (type == "I") {
+    this.color = "cyan";
+    new Square(x-1, y, this.color);
+    new Square(x,   y, this.color);
+    new Square(x+1, y, this.color);
+    new Square(x+2, y, this.color);
+  } else if (type == "J") {
+    this.color = "blue";
+    new Square(x-1, y,   this.color);
+    new Square(x,   y,   this.color);
+    new Square(x+1, y,   this.color);
+    new Square(x+1, y+1, this.color);
+  }
 }
 
 function Square(x, y, color) {
@@ -62,8 +87,13 @@ function drawFrame() {
   ctx.clearRect(0, 0, width, height);
   drawGridDots();
   drawRect(x, y);
+  updateFallingBlock();
   drawSquares();
   window.requestAnimationFrame(drawFrame);
+}
+
+function updateFallingBlock() {
+
 }
 
 function drawSquares() {
