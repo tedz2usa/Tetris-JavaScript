@@ -12,6 +12,8 @@ var x, y;
 var xMax, yMax;
 var squares;
 var blocks;
+var fallInterval, lastFallTime;
+
 
 function init() {
   log("Window Loaded!");
@@ -48,6 +50,10 @@ function init() {
 
   new Square(3, 10, "red");
   new Square(4, 10, "orange");
+
+  fallInterval = 1000;
+  lastFallTime = Date.now();
+
 
   drawFrame();
 
@@ -96,6 +102,13 @@ Block.prototype.rotate = function() {
   }
 }
 
+Block.prototype.updateFall = function() {
+  for (var i = 0; i < this.squares.length; i++) {
+    var square = this.squares[i];
+    square.y++;
+  }
+}
+
 function Square(x, y, color) {
   this.x = x;
   this.y = y;
@@ -136,7 +149,19 @@ function drawFrame() {
   drawGridDots();
   drawRect(x, y);
   drawSquares();
+  if ((Date.now() - lastFallTime) > fallInterval) {
+    log("Falling");
+    updateBlockFall();
+    lastFallTime = Date.now();
+  }
   window.requestAnimationFrame(drawFrame);
+}
+
+function updateBlockFall() {
+  for (var i = 0; i < blocks.length; i++) {
+    var block = blocks[i];
+    block.updateFall();
+  }
 }
 
 function rotateBlocks() {
