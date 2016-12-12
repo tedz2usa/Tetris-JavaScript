@@ -10,8 +10,8 @@ var width, height;
 var gridUnit;
 var x, y;
 var xMax, yMax;
-var squaresToDraw;
-var fallingBlock;
+var squares;
+var blocks;
 
 function init() {
   log("Window Loaded!");
@@ -29,24 +29,25 @@ function init() {
   xMax = width/gridUnit;
   yMax = height/gridUnit;
 
-  squaresToDraw = new Array(xMax);
+  squares = new Array(xMax);
   for (var i = 0; i < xMax; i++) {
-    squaresToDraw[i] = new Array(yMax);
+    squares[i] = new Array(yMax);
   }
 
-  fallingBlock = new Block(8, 5, "I");
-  fallingBlock = new Block(8, 8, "J");
-  fallingBlock = new Block(8, 11, "L");
-  fallingBlock = new Block(8, 14, "O");
-  fallingBlock = new Block(8, 17, "S");
-  fallingBlock = new Block(8, 20, "T");
-  fallingBlock = new Block(8, 23, "Z");
+  blocks = [];
+  new Block(8, 4, "I");
+  new Block(8, 9, "J");
+  new Block(8, 13, "L");
+  new Block(8, 17, "O");
+  new Block(8, 21, "S");
+  new Block(8, 25, "T");
+  new Block(8, 29, "Z");
 
   x = 5;
   y = 5;
 
-  var s1 = new Square(3, 10, "red");
-  var s2 = new Square(4, 10, "orange");
+  new Square(3, 10, "red");
+  new Square(4, 10, "orange");
 
   drawFrame();
 
@@ -78,10 +79,30 @@ function Block(x, y, type) {
   this.type = type;
   this.color = blockColors[type];
   this.squares = [];
+  this.unrotateNext = false;
   var positions = blockPositions[type];
   for (var i = 0; i < 4; i++) {
     var position = positions[i];
     this.squares.push(new Square(x+position[0], y+position[1], this.color));
+  }
+  blocks.push(this);
+}
+
+Block.prototype.rotate = function() {
+  for (var i = 0; i < this.squares.length; i++) {
+    var square = this.squares[i];
+    if (this.type != "O") {
+      square.rotateAround(this.x, this.y);
+    }
+    // if (this.type == "I" || this.type == "S" || this.type == "Z") {
+    //   if (!this.unrotateNext) {
+    //     this.unrotateNext = true;
+    //     square.rotateAround(this.x, this.y);
+    //   } else {
+    //     this.unrotateNext = false;
+    //     square.unRotateAround(this.x, this.y);
+    //   }
+    // }
   }
 }
 
@@ -89,7 +110,7 @@ function Square(x, y, color) {
   this.x = x;
   this.y = y;
   this.color = color;
-  squaresToDraw[x][y] = this;
+  squares[x][y] = this;
 }
 
 Square.prototype.draw = function() {
@@ -100,23 +121,45 @@ Square.prototype.draw = function() {
   ctx.restore();
 }
 
+Square.prototype.rotateAround = function (x, y) {
+  log("Rotating square", this);
+  var sx = this.x - x;
+  var sy = this.y - y;
+  var rx = -sy;
+  var ry = sx;
+  this.x = rx + x;
+  this.y = ry + y;
+}
+
+Square.prototype.unRotateAround = function (x, y) {
+  log("Rotating square", this);
+  var sx = this.x - x;
+  var sy = this.y - y;
+  var rx = sy;
+  var ry = -sx;
+  this.x = rx + x;
+  this.y = ry + y;
+}
+
 function drawFrame() {
   ctx.clearRect(0, 0, width, height);
   drawGridDots();
   drawRect(x, y);
-  updateFallingBlock();
   drawSquares();
   window.requestAnimationFrame(drawFrame);
 }
 
-function updateFallingBlock() {
-
+function rotateBlocks() {
+  for (var i = 0; i < blocks.length; i++) {
+    var block = blocks[i];
+    block.rotate();
+  }
 }
 
 function drawSquares() {
   for (var x = 0; x < xMax; x++) {
     for (var y = 0; y < yMax; y++) {
-      var square = squaresToDraw[x][y];
+      var square = squares[x][y];
       if (square) {
         square.draw();
       }
@@ -137,6 +180,9 @@ function keydown(e) {
   }
   if (e.code == "ArrowDown") {
     y += 1;
+  }
+  if (e.code == "Space") {
+    rotateBlocks();
   }
 
 }
