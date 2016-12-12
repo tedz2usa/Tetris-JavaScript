@@ -45,40 +45,12 @@ function init() {
   new Block(8, 25, "T");
   new Block(8, 29, "Z");
 
-  x = 5;
-  y = 5;
-
-  new Square(3, 10, "red");
-  new Square(4, 10, "orange");
-
   fallInterval = 1000;
   lastFallTime = Date.now();
-
 
   drawFrame();
 
 }
-
-var blockPositions = {
-  "I": [ [-1,0], [ 0,0], [1,0], [2,0] ],
-  "J": [ [-1,0], [ 0,0], [1,0], [1,1] ],
-  "L": [ [-1,1], [-1,0], [0,0], [1,0] ],
-  "O": [ [ 0,0], [ 1,0], [1,1], [0,1] ],
-  "S": [ [-1,1], [ 0,1], [0,0], [1,0] ],
-  "T": [ [-1,0], [ 0,0], [0,1], [1,0] ],
-  "Z": [ [-1,0], [ 0,0], [0,1], [1,1] ]
-}
-
-var blockColors = {
-  "I": "cyan",
-  "J": "blue",
-  "L": "orange",
-  "O": "yellow",
-  "S": "green",
-  "T": "purple",
-  "Z": "red"
-}
-
 
 
 function drawFrame() {
@@ -87,7 +59,6 @@ function drawFrame() {
   drawRect(x, y);
   drawSquares();
   if ((Date.now() - lastFallTime) > fallInterval) {
-    log("Falling");
     updateBlockFall();
     lastFallTime = Date.now();
   }
