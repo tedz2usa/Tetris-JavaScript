@@ -52,53 +52,36 @@ function init() {
 
 }
 
+var blockPositions = {
+  "I": [ [-1,0], [ 0,0], [1,0], [2,0] ],
+  "J": [ [-1,0], [ 0,0], [1,0], [1,1] ],
+  "L": [ [-1,1], [-1,0], [0,0], [1,0] ],
+  "O": [ [ 0,0], [ 1,0], [1,1], [0,1] ],
+  "S": [ [-1,1], [ 0,1], [0,0], [1,0] ],
+  "T": [ [-1,0], [ 0,0], [0,1], [1,0] ],
+  "Z": [ [-1,0], [ 0,0], [0,1], [1,1] ]
+}
+
+var blockColors = {
+  "I": "cyan",
+  "J": "blue",
+  "L": "orange",
+  "O": "yellow",
+  "S": "green",
+  "T": "purple",
+  "Z": "red"
+}
+
 function Block(x, y, type) {
   this.x = x;
   this.y = y;
   this.type = type;
+  this.color = blockColors[type];
   this.squares = [];
-  if (type == "I") {
-    this.color = "cyan";
-    this.squares.push(new Square(x-1, y,   this.color));
-    this.squares.push(new Square(x,   y,   this.color));
-    this.squares.push(new Square(x+1, y,   this.color));
-    this.squares.push(new Square(x+2, y,   this.color));
-  } else if (type == "J") {
-    this.color = "blue";
-    this.squares.push(new Square(x-1, y,   this.color));
-    this.squares.push(new Square(x,   y,   this.color));
-    this.squares.push(new Square(x+1, y,   this.color));
-    this.squares.push(new Square(x+1, y+1, this.color));
-  } else if (type == "L") {
-    this.color = "orange";
-    this.squares.push(new Square(x-1, y+1, this.color));
-    this.squares.push(new Square(x-1, y,   this.color));
-    this.squares.push(new Square(x,   y,   this.color));
-    this.squares.push(new Square(x+1, y,   this.color));
-  } else if (type == "O") {
-    this.color = "yellow";
-    this.squares.push(new Square(x,   y,   this.color));
-    this.squares.push(new Square(x+1, y,   this.color));
-    this.squares.push(new Square(x+1, y+1, this.color));
-    this.squares.push(new Square(x,   y+1, this.color));
-  } else if (type == "S") {
-    this.color = "green";
-    this.squares.push(new Square(x-1, y+1, this.color));
-    this.squares.push(new Square(x,   y+1, this.color));
-    this.squares.push(new Square(x,   y,   this.color));
-    this.squares.push(new Square(x+1, y,   this.color));
-  } else if (type == "T") {
-    this.color = "purple";
-    this.squares.push(new Square(x-1, y,   this.color));
-    this.squares.push(new Square(x,   y,   this.color));
-    this.squares.push(new Square(x,   y+1, this.color));
-    this.squares.push(new Square(x+1, y,   this.color));
-  } else if (type == "Z") {
-    this.color = "red";
-    this.squares.push(new Square(x-1, y,   this.color));
-    this.squares.push(new Square(x,   y,   this.color));
-    this.squares.push(new Square(x,   y+1, this.color));
-    this.squares.push(new Square(x+1, y+1, this.color));
+  var positions = blockPositions[type];
+  for (var i = 0; i < 4; i++) {
+    var position = positions[i];
+    this.squares.push(new Square(x+position[0], y+position[1], this.color));
   }
 }
 
