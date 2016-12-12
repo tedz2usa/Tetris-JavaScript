@@ -9,8 +9,16 @@ var canvas, ctx;
 var width, height;
 var gridSpace;
 var x, y;
-var gridMaxX, gridMaxY;
+var xMax, yMax;
 var squaresToDraw;
+
+var RED = 1;
+var ORANGE = 2;
+var YELLOW = 3;
+var GREEN = 4;
+var BLUE = 5;
+var PURPLE = 6;
+var CYAN = 7;
 
 function init() {
   log("Window Loaded!");
@@ -25,25 +33,46 @@ function init() {
   height = canvas.height;
 
   gridSpace = 20;
-  gridMaxX = width/gridSpace;
-  gridMaxY = height/gridSpace;
+  xMax = width/gridSpace;
+  yMax = height/gridSpace;
 
-  squaresToDraw = new Array(gridMaxY);
-  for (var i = 0; i < gridMaxY; i++) {
-    squaresToDraw[i] = new Array(gridMaxX);
+  squaresToDraw = new Array(xMax);
+  for (var i = 0; i < xMax; i++) {
+    squaresToDraw[i] = new Array(yMax);
   }
 
   x = 5;
   y = 5;
+
+  var s = new Square(3, 10, RED);
+
   drawFrame();
 
+}
+
+function Square(x, y, color) {
+  this.x = x;
+  this.y = y;
+  this.color = color;
+  squaresToDraw[x][y] = this;
 }
 
 function drawFrame() {
   ctx.clearRect(0, 0, width, height);
   drawGridDots();
   drawRect(x, y);
+  drawSquares();
   window.requestAnimationFrame(drawFrame);
+}
+
+function drawSquares() {
+  for (var x = 0; x < xMax; x++) {
+    for (var y = 0; y < yMax; y++) {
+      if (squaresToDraw[x][y]) {
+        drawRect(x, y);
+      }
+    }
+  }
 }
 
 function keydown(e) {
@@ -64,13 +93,13 @@ function keydown(e) {
 }
 
 function drawGridDots() {
-  for (var gridX = 0; gridX < gridMaxX; gridX++) {
-    for (var gridY = 0; gridY < gridMaxY; gridY++) {
-      ctx.fillRect(gridX*gridSpace, gridY*gridSpace, 1, 1);
+  for (var x = 0; x < xMax; x++) {
+    for (var y = 0; y < yMax; y++) {
+      ctx.fillRect(x*gridSpace, y*gridSpace, 1, 1);
     }
   }
 }
 
-function drawRect(gridX, gridY) {
-  ctx.strokeRect(gridX * gridSpace+0.5, gridY * gridSpace+0.5, gridSpace, gridSpace);
+function drawRect(x, y) {
+  ctx.strokeRect(x * gridSpace+0.5, y * gridSpace+0.5, gridSpace, gridSpace);
 }
