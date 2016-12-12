@@ -81,6 +81,24 @@ function Block(x, y, type) {
     new Square(x+1, y,   this.color);
     new Square(x+1, y+1, this.color);
     new Square(x,   y+1, this.color);
+  } else if (type == "S") {
+    this.color = "green";
+    new Square(x-1, y+1, this.color);
+    new Square(x,   y+1, this.color);
+    new Square(x,   y,   this.color);
+    new Square(x+1, y,   this.color);
+  } else if (type == "T") {
+    this.color = "purple";
+    new Square(x-1, y,   this.color);
+    new Square(x,   y,   this.color);
+    new Square(x,   y+1, this.color);
+    new Square(x+1, y,   this.color);
+  } else if (type == "Z") {
+    this.color = "red";
+    new Square(x-1, y,   this.color);
+    new Square(x,   y,   this.color);
+    new Square(x,   y+1, this.color);
+    new Square(x+1, y+1, this.color);
   }
 }
 
