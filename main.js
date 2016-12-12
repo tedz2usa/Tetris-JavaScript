@@ -37,6 +37,10 @@ function init() {
   fallingBlock = new Block(8, 5, "I");
   fallingBlock = new Block(8, 8, "J");
   fallingBlock = new Block(8, 11, "L");
+  fallingBlock = new Block(8, 14, "O");
+  fallingBlock = new Block(8, 17, "S");
+  fallingBlock = new Block(8, 20, "T");
+  fallingBlock = new Block(8, 23, "Z");
 
   x = 5;
   y = 5;
@@ -55,16 +59,28 @@ function Block(x, y, type) {
   this.squares = [];
   if (type == "I") {
     this.color = "cyan";
-    new Square(x-1, y, this.color);
-    new Square(x,   y, this.color);
-    new Square(x+1, y, this.color);
-    new Square(x+2, y, this.color);
+    new Square(x-1, y,   this.color);
+    new Square(x,   y,   this.color);
+    new Square(x+1, y,   this.color);
+    new Square(x+2, y,   this.color);
   } else if (type == "J") {
     this.color = "blue";
     new Square(x-1, y,   this.color);
     new Square(x,   y,   this.color);
     new Square(x+1, y,   this.color);
     new Square(x+1, y+1, this.color);
+  } else if (type == "L") {
+    this.color = "orange";
+    new Square(x-1, y+1, this.color);
+    new Square(x-1, y,   this.color);
+    new Square(x,   y,   this.color);
+    new Square(x+1, y,   this.color);
+  } else if (type == "O") {
+    this.color = "yellow";
+    new Square(x,   y,   this.color);
+    new Square(x+1, y,   this.color);
+    new Square(x+1, y+1, this.color);
+    new Square(x,   y+1, this.color);
   }
 }
 
