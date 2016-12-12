@@ -16,21 +16,10 @@ Square.prototype.draw = function() {
 }
 
 Square.prototype.rotateAround = function (x, y) {
-  log("Rotating square", this);
   var sx = this.x - x;
   var sy = this.y - y;
   var rx = -sy;
   var ry = sx;
-  this.x = rx + x;
-  this.y = ry + y;
-}
-
-Square.prototype.unRotateAround = function (x, y) {
-  log("Rotating square", this);
-  var sx = this.x - x;
-  var sy = this.y - y;
-  var rx = sy;
-  var ry = -sx;
   this.x = rx + x;
   this.y = ry + y;
 }
