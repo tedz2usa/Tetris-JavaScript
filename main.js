@@ -22,6 +22,7 @@ function init() {
 
   width = canvas.width;
   height = canvas.height;
+
   gridSpace = 20;
   gridMaxX = width/gridSpace;
   gridMaxY = height/gridSpace;
