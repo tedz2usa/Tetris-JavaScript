@@ -25,10 +25,11 @@ var nextBlockId = 1;
 function Block(x, y, type) {
   this.x = x;
   this.y = y;
-  this.type = type;
-  this.color = blockColors[type];
+  this.type = this.nextBlockType();
+  log("New type is ", this.type);
+  this.color = blockColors[this.type];
   this.squares = [];
-  var positions = blockPositions[type];
+  var positions = blockPositions[this.type];
   for (var i = 0; i < positions.length; i++) {
     var position = positions[i];
     var square = new Square(x+position[0], y+position[1], this.color);
@@ -36,8 +37,6 @@ function Block(x, y, type) {
     this.squares.push(square);
   }
   this.id = nextBlockId++;
-  blocks[this.id] = this;
-  log(blocks);
 }
 
 Block.prototype.rotate = function() {
@@ -46,6 +45,7 @@ Block.prototype.rotate = function() {
       var square = this.squares[i];
       square.rotateAround(this.x, this.y);
     }
+    Square.registerNewPositions();
   }
 }
 
@@ -56,6 +56,10 @@ Block.prototype.offsetPosition = function(dx, dy) {
     var square = this.squares[i];
     square.setXY(square.x+dx, square.y+dy);
   }
+  if (this.collisionCheck()) {
+    this.detach();
+  }
+  Square.registerNewPositions();
 }
 
 Block.prototype.collisionCheck = function() {
@@ -75,5 +79,10 @@ Block.prototype.collisionCheck = function() {
 }
 
 Block.prototype.detach = function() {
-  delete blocks[this.id];
+  fallingBlock = new Block(8, 33);
+}
+
+Block.prototype.nextBlockType = function() {
+  var types = ["I", "J", "L", "O", "S", "T", "Z"];
+  return types[Math.floor(Math.random()*types.length)];
 }

@@ -11,7 +11,7 @@ var gridUnit;
 var x, y;
 var xMax, yMax;
 var squares, squaresXY;
-var blocks;
+var fallingBlock;
 var fallInterval, lastFallTime;
 
 
@@ -37,14 +37,15 @@ function init() {
     squaresXY[i] = new Array();
   }
 
-  blocks = [];
-  new Block(8, 2, "I");
-  new Block(8, 8, "J");
-  new Block(8, 13, "L");
-  new Block(8, 18, "O");
-  new Block(8, 23, "S");
-  new Block(8, 28, "T");
-  new Block(8, 33, "Z");
+  fallingBlock = new Block(8, 33);
+  // blocks = [];
+  // new Block(8, 2, "I");
+  // new Block(8, 8, "J");
+  // new Block(8, 13, "L");
+  // new Block(8, 18, "O");
+  // new Block(8, 23, "S");
+  // new Block(8, 28, "T");
+  // new Block(8, 33, "Z");
 
   fallInterval = 1000;
   lastFallTime = Date.now();
@@ -60,30 +61,10 @@ function drawFrame() {
   drawRect(x, y);
   drawSquares();
   if ((Date.now() - lastFallTime) > fallInterval) {
-    offsetBlockPositions(0, 1);
+    fallingBlock.offsetPosition(0, 1);
     lastFallTime = Date.now();
   }
   window.requestAnimationFrame(drawFrame);
-}
-
-function offsetBlockPositions(dx, dy) {
-  for (var block_id in blocks) {
-    var block = blocks[block_id];
-    block.offsetPosition(dx, dy);
-    if (block.collisionCheck()) {
-      block.detach();
-      // log("Collision!");
-    }
-  }
-  Square.registerNewPositions();
-}
-
-function rotateBlocks() {
-  for (var block_id in blocks) {
-    var block = blocks[block_id];
-    block.rotate();
-  }
-  Square.registerNewPositions();
 }
 
 function drawSquares() {
@@ -96,19 +77,19 @@ function drawSquares() {
 function keydown(e) {
   log(e.code);
   if (e.code == "ArrowLeft") {
-    offsetBlockPositions(-1, 0);
+    fallingBlock.offsetPosition(-1, 0);
   }
   if (e.code == "ArrowRight") {
-    offsetBlockPositions(1, 0);
+    fallingBlock.offsetPosition(1, 0);
   }
   if (e.code == "ArrowUp") {
-    rotateBlocks();
+    fallingBlock.rotate();
   }
   if (e.code == "ArrowDown") {
-    offsetBlockPositions(0, 1);
+    fallingBlock.offsetPosition(0, 1);
   }
   if (e.code == "Space") {
-    rotateBlocks();
+    fallingBlock.rotate();
   }
 
 }
