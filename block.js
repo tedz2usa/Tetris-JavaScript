@@ -26,7 +26,6 @@ function Block(x, y, type) {
   this.x = x;
   this.y = y;
   this.type = this.nextBlockType();
-  log("New type is ", this.type);
   this.color = blockColors[this.type];
   this.squares = [];
   var positions = blockPositions[this.type];
