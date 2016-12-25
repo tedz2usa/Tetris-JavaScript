@@ -49,12 +49,12 @@ Block.prototype.rotate = function() {
   }
 }
 
-Block.prototype.updateFall = function() {
-  this.y++;
+Block.prototype.offsetPosition = function(dx, dy) {
+  this.x += dx;
+  this.y += dy;
   for (var i = 0; i < this.squares.length; i++) {
     var square = this.squares[i];
-    square.setXY(square.x, square.y+1);
-    // square.y++;
+    square.setXY(square.x+dx, square.y+dy);
   }
 }
 

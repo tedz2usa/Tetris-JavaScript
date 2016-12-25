@@ -38,13 +38,13 @@ function init() {
   }
 
   blocks = [];
-  new Block(8, 4, "I");
-  new Block(8, 9, "J");
+  new Block(8, 2, "I");
+  new Block(8, 8, "J");
   new Block(8, 13, "L");
-  new Block(8, 17, "O");
-  new Block(8, 21, "S");
-  new Block(8, 25, "T");
-  new Block(8, 29, "Z");
+  new Block(8, 18, "O");
+  new Block(8, 23, "S");
+  new Block(8, 28, "T");
+  new Block(8, 33, "Z");
 
   fallInterval = 1000;
   lastFallTime = Date.now();
@@ -60,16 +60,16 @@ function drawFrame() {
   drawRect(x, y);
   drawSquares();
   if ((Date.now() - lastFallTime) > fallInterval) {
-    updateBlockFall();
+    offsetBlockPositions(0, 1);
     lastFallTime = Date.now();
   }
   window.requestAnimationFrame(drawFrame);
 }
 
-function updateBlockFall() {
+function offsetBlockPositions(dx, dy) {
   for (var block_id in blocks) {
     var block = blocks[block_id];
-    block.updateFall();
+    block.offsetPosition(dx, dy);
     if (block.collisionCheck()) {
       block.detach();
       // log("Collision!");
@@ -83,6 +83,7 @@ function rotateBlocks() {
     var block = blocks[block_id];
     block.rotate();
   }
+  Square.registerNewPositions();
 }
 
 function drawSquares() {
@@ -95,16 +96,16 @@ function drawSquares() {
 function keydown(e) {
   log(e.code);
   if (e.code == "ArrowLeft") {
-    x -= 1;
+    offsetBlockPositions(-1, 0);
   }
   if (e.code == "ArrowRight") {
-    x += 1;
+    offsetBlockPositions(1, 0);
   }
   if (e.code == "ArrowUp") {
-    y -= 1;
+    offsetBlockPositions(0, -1);
   }
   if (e.code == "ArrowDown") {
-    y += 1;
+    offsetBlockPositions(0, 1);
   }
   if (e.code == "Space") {
     rotateBlocks();
