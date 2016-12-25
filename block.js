@@ -27,7 +27,7 @@ function Block(x, y, type) {
   this.color = blockColors[type];
   this.squares = [];
   var positions = blockPositions[type];
-  for (var i = 0; i < 4; i++) {
+  for (var i = 0; i < positions.length; i++) {
     var position = positions[i];
     var square = new Square(x+position[0], y+position[1], this.color);
     square.block = this;
