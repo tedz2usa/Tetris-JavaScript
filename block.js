@@ -20,6 +20,8 @@ var blockColors = {
   "Z": "red"
 }
 
+var nextBlockId = 1;
+
 function Block(x, y, type) {
   this.x = x;
   this.y = y;
@@ -33,7 +35,9 @@ function Block(x, y, type) {
     square.block = this;
     this.squares.push(square);
   }
-  blocks.push(this);
+  this.id = nextBlockId++;
+  blocks[this.id] = this;
+  log(blocks);
 }
 
 Block.prototype.rotate = function() {
@@ -49,6 +53,27 @@ Block.prototype.updateFall = function() {
   this.y++;
   for (var i = 0; i < this.squares.length; i++) {
     var square = this.squares[i];
-    square.y++;
+    square.setXY(square.x, square.y+1);
+    // square.y++;
   }
+}
+
+Block.prototype.collisionCheck = function() {
+  for (var i = 0; i < this.squares.length; i++) {
+    var square = this.squares[i];
+    if (square.y >= yMax) {
+      log(square.y, yMax);
+      return true;
+    }
+    var squareBelow = Square.get(square.x, square.y+1);
+    if ( (squareBelow != null) && (squareBelow.block != this) ) {
+      log(squareBelow);
+      return true;
+    }
+  }
+  return false;
+}
+
+Block.prototype.detach = function() {
+  delete blocks[this.id];
 }

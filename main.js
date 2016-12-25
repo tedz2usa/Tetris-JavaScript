@@ -10,7 +10,7 @@ var width, height;
 var gridUnit;
 var x, y;
 var xMax, yMax;
-var squares;
+var squares, squaresXY;
 var blocks;
 var fallInterval, lastFallTime;
 
@@ -28,12 +28,13 @@ function init() {
   height = canvas.height;
 
   gridUnit = 20;
-  xMax = width/gridUnit;
-  yMax = height/gridUnit;
+  xMax = width/gridUnit-1;
+  yMax = height/gridUnit-1;
 
-  squares = new Array(xMax);
+  squares = [];
+  squaresXY = new Array(xMax);
   for (var i = 0; i < xMax; i++) {
-    squares[i] = new Array(yMax);
+    squaresXY[i] = new Array();
   }
 
   blocks = [];
@@ -66,27 +67,28 @@ function drawFrame() {
 }
 
 function updateBlockFall() {
-  for (var i = 0; i < blocks.length; i++) {
-    var block = blocks[i];
+  for (var block_id in blocks) {
+    var block = blocks[block_id];
     block.updateFall();
+    if (block.collisionCheck()) {
+      block.detach();
+      // log("Collision!");
+    }
   }
+  Square.registerNewPositions();
 }
 
 function rotateBlocks() {
-  for (var i = 0; i < blocks.length; i++) {
-    var block = blocks[i];
+  for (var block_id in blocks) {
+    var block = blocks[block_id];
     block.rotate();
   }
 }
 
 function drawSquares() {
-  for (var x = 0; x < xMax; x++) {
-    for (var y = 0; y < yMax; y++) {
-      var square = squares[x][y];
-      if (square) {
-        square.draw();
-      }
-    }
+  for (var square_id in squares) {
+    var square = squares[square_id];
+    square.draw();
   }
 }
 
@@ -111,8 +113,8 @@ function keydown(e) {
 }
 
 function drawGridDots() {
-  for (var x = 0; x < xMax; x++) {
-    for (var y = 0; y < yMax; y++) {
+  for (var x = 0; x <= xMax; x++) {
+    for (var y = 0; y <= yMax; y++) {
       ctx.fillRect(x*gridUnit, y*gridUnit, 1, 1);
     }
   }
