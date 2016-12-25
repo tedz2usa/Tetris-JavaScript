@@ -102,7 +102,7 @@ function keydown(e) {
     offsetBlockPositions(1, 0);
   }
   if (e.code == "ArrowUp") {
-    offsetBlockPositions(0, -1);
+    rotateBlocks();
   }
   if (e.code == "ArrowDown") {
     offsetBlockPositions(0, 1);
